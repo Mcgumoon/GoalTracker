@@ -5,8 +5,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './routes/ProtectedRoute';
 import VerifyEmail from './pages/VerifyEmail';
-import './App.css'
 import ForgotPassword from './pages/ForgotPassword';
+import Settings from './pages/Settings';
+import ChangePassword from './pages/ChangePassword';
+import './App.css'
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/verify-email' element={<VerifyEmail />} />
         <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path='/settings' element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+        <Route path='/settings/change-password' element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
         <Route path='/forgotpassword' element={<ForgotPassword/>} />
         <Route path='*' element={<h1 className='text-center mt-20 text-3xl'>404 - Page Not Found</h1>} />
       </Routes>
