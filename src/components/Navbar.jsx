@@ -23,6 +23,9 @@ export default function Navbar() {
                         <NavLink to="/home" className="rounded-md hover:bg-purple-200">
                             Home
                         </NavLink>
+                        <NavLink to="/settings" className="rounded-md hover:bg-purple-200">
+                            Settings
+                        </NavLink>
                         <button onClick={logout} className='rounded-md bg-purple-500 hover:bg-purple-300'>
                             Logout
                         </button>
