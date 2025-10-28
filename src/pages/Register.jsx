@@ -4,7 +4,8 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Register(){
     const { user } = useAuth();
-    if (user) return <Navigate to="/verify-email" replace />;
+    if (user && !user.emailVerified) return <Navigate to="/verify-email" replace />;
+    if (user && user.emailVerified) return <Navigate to="/home" replace />;
 
     return (
         <div>

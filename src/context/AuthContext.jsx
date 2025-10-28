@@ -70,9 +70,9 @@ export function AuthProvider({ children }) {
   }, [user]);
 
   
-  const register = async ({ email, password, username }) => {
+  const register = async ({ email, password, displayName }) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
-    if (username) await updateProfile(cred.user, { displayName: username });
+    if (displayName) await updateProfile(cred.user, { displayName });
     await sendEmailVerification(cred.user);
     return cred.user;
   };

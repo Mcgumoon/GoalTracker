@@ -1,8 +1,9 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     return (
         <header className='border-b bg-white/70 backdrop-blur-2xl'>
@@ -26,7 +27,12 @@ export default function Navbar() {
                         <NavLink to="/settings" className="rounded-md hover:bg-purple-200">
                             Settings
                         </NavLink>
-                        <button onClick={logout} className='rounded-md bg-purple-500 hover:bg-purple-300'>
+                        <button onClick={
+                            async () => {
+                                await logout();
+                                navigate("/login", { replace: true });
+                            }
+                            } className='rounded-md bg-purple-500 hover:bg-purple-300'>
                             Logout
                         </button>
                         </>

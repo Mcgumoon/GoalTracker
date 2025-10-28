@@ -18,7 +18,7 @@ function App() {
         <Route path='/' element={<Navigate to="/login" replace/>} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/verify-email' element={<VerifyEmail />} />
+        <Route path='/verify-email' element={<ProtectedRoute requireVerification={false}><VerifyEmail></VerifyEmail></ProtectedRoute>} />
         <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path='/settings' element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         <Route path='/settings/change-password' element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />

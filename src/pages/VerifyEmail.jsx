@@ -1,4 +1,3 @@
-// src/pages/VerifyEmail.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendEmailVerification } from "firebase/auth";
@@ -10,8 +9,12 @@ export default function VerifyEmail() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    if(!user) {
+      navigate("/login", { replace: true });
+      return;
+    }
+
     if (user?.emailVerified) {
-      // If user is already verified, redirect to home
       navigate("/home");
     }
   }, [user, navigate]);
@@ -30,7 +33,7 @@ export default function VerifyEmail() {
   };
 
   const handleCheckStatus = async () => {
-    await user.reload(); // refresh user data
+    await user.reload(); 
     if (user.emailVerified) {
       navigate("/home");
     } else {
