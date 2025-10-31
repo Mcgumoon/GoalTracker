@@ -1,27 +1,33 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthForm from "../components/AuthForm";
 import { useAuth } from "../context/AuthContext";
-import { use, useEffect } from "react";
+import LogoHero from "../components/LogoHero";
 
 export default function Login() {
-    const { user, loading } = useAuth();
-    const navigate = useNavigate();
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!loading && user) {
-            navigate("/home", { replace: true });
-        }
-    }, [user, loading, navigate]);
+  useEffect(() => {
+    if (!loading && user?.emailVerified) {
+      navigate("/", { replace: true });
+    }
+  }, [user, loading, navigate]);
 
-    return (
-        <div>
-            <div>
-                <h1>Login</h1>
-                <p>New Here?{" "}
-                    <Link to="/register" className="">Create an account</Link>
-                </p>
-            </div>
-            <AuthForm mode="login" />
-        </div>
-    );
+  return (
+    <section className="page-auth">
+      <LogoHero size={96} />
+      <h1 className="text-3xl md:text-4xl font-extrabold mt-4">Welcome Back!</h1>
+      <p className="subtle mb-6">Log back into your account</p>
+      <div className="auth-card">
+        <AuthForm mode="login" />
+      </div>
+      <p className="text-base font-medium mt-4">
+        New here?{" "}
+        <Link to="/register" className="text-violet hover:text-violet2 font-semibold">
+          Create an account
+        </Link>
+      </p>
+    </section>
+  );
 }

@@ -1,136 +1,152 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export default function AuthForm({ mode = "login" }) {
-    const navigate = useNavigate();
-    const isRegister = mode === "register";
-    const { login, register, signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
+  const isRegister = mode === "register";
+  const { login, register, signInWithGoogle } = useAuth();
 
-    const [displayName, setDisplayName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordConfirm, setPasswordConfirm] = useState("");
-    const [error, setError] = useState("");
-    const [submitting, setSubmitting] = useState(false);
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-        if (isRegister && password !== passwordConfirm) {
-            setError("Passwords do not match");
-            return;
-        }
+    if (isRegister && password !== passwordConfirm) {
+      setError("Passwords do not match");
+      return;
+    }
 
-        try {
-            setSubmitting(true);
-            if (isRegister) {
-                await register({ email, password: password, displayName });
-                setError("Verification email sent! Please check your inbox before logging in.");
-                navigate("/verify-email");
-            } else {
-                await login(email, password);
-            }
-        } catch (err) {
-            setError(err?.message || "An error occurred. Please try again.");
-        } finally {
-            setSubmitting(false);
-        }
-    };
+    try {
+      setSubmitting(true);
+      if (isRegister) {
+        await register({ email, password, displayName });
+        navigate("/verify-email");
+      } else {
+        await login(email, password);
+        navigate("/");
+      }
+    } catch (err) {
+      setError(err?.message || "An error occurred. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
-    const handleGoogleSignIn = async () => {
-        setError("");
-        try {
-            setSubmitting(true);
-            await signInWithGoogle();
-        } catch (err) {
-            setError(err?.message || "Google sign-in failed. Please try again.");
-        } finally {
-            setSubmitting(false);
-        }
-    };
+  const handleGoogleSignIn = async () => {
+    setError("");
+    try {
+      setSubmitting(true);
+      await signInWithGoogle();
+    } catch (err) {
+      setError(err?.message || "Google sign-in failed. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
-    return (
-        <div className="">
-            <h1 className="text-2xl font-semibold">
-                {isRegister ? "Create your account" : "Welcome Back!"}
-            </h1>
-            <p className="text-sm">
-                {isRegister ? "Sign up to get started!" : "Log back to your account!"}
-            </p>
-
-            {error && (
-                <div className="rounded-md border border-red-200 bg-red-300 text-sm ">
-                    {error}
-                </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="">
-                <ul>
-                    {isRegister && (
-                        <li>
-                            <label className="">Display Name</label>
-                            <input type="text" value={displayName}
-                                onChange={(e) => setDisplayName(e.target.value)}
-                                placeholder="Full Name"
-                                className=""
-                                required
-                            />
-                        </li>
-                    )}
-                    <li>
-                        <label className="">Email</label>
-                        <input type="email" autoComplete="email" value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="example@example.com"
-                            className=""
-                            required
-                        />
-                    </li>
-                    <li>
-                        <label className="">Password</label>
-                        <input type="password" autoComplete={isRegister ? "new-password" : "current-password"}
-                            value={password} onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter Password" className=""
-                            required
-                            minLength={8}
-                        />
-                    </li>
-
-                    {isRegister && (
-                        <li>
-                            <label className="">Confirm Password</label>
-                            <input type="password" value={passwordConfirm}
-                                onChange={(e) => setPasswordConfirm(e.target.value)}
-                                className=""
-                                required
-                                minLength={8}
-                            />
-                        </li>
-                    )}
-
-                    <button type="submit" disabled={submitting} className="">
-                        {submitting ? "Please wait..." : isRegister ? "Create Account" : "Log In"}
-                    </button>
-                </ul>
-            </form>
-
-            <p className="text-sm">
-                <Link to="/forgotpassword" className="text-purple-600 hover:underline">Forgot your password?</Link>
-            </p>
-
-            <div className="flex items-center">
-                <div className="h-px flex-1 bg-gray-200" />
-                <h6 className="text-xl">or</h6>
-                <div className="h-px flex-1 bg-gray-200" />
-            </div>
-
-            <button onClick={handleGoogleSignIn} disabled={submitting}
-                className="">
-                Continue with Google
-            </button>
+  return (
+    <div className="flex flex-col gap-3 text-base">
+      {error && (
+        <div className="rounded-xl border-2 border-rose3/40 bg-rose2/40 text-[#7a0031] text-sm px-3 py-2 text-left">
+          {error}
         </div>
-    )
+      )}
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-left">
+        {isRegister && (
+          <div>
+            <label className="subtle block mb-1">Display Name</label>
+            <input
+              className="input"
+              placeholder="Full Name"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              required
+            />
+          </div>
+        )}
+
+        <div>
+          <label className="subtle block mb-1">Email</label>
+          <input
+            className="input"
+            type="email"
+            placeholder="example@site.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="subtle block mb-1">Password</label>
+          <input
+            className="input"
+            type="password"
+            placeholder="Enter Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete={isRegister ? "new-password" : "current-password"}
+            minLength={8}
+            required
+          />
+        </div>
+
+        {isRegister && (
+          <div>
+            <label className="subtle block mb-1">Confirm Password</label>
+            <input
+              className="input"
+              type="password"
+              placeholder="Re-enter Password"
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              minLength={8}
+              required
+            />
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="btn btn-primary"
+          aria-busy={submitting}
+        >
+          {submitting
+            ? "Please wait..."
+            : isRegister
+            ? "Create Account"
+            : "Log In"}
+        </button>
+      </form>
+
+      <Link to="/forgot-password" className="btn btn-outline text-base font-medium">
+        Forgot your password?
+      </Link>
+
+      <div className="divider my-4" />
+      <div className="text-base text-center font-medium text-gray-700">or</div>
+      <div className="divider my-4" />
+
+      <button
+        onClick={handleGoogleSignIn}
+        disabled={submitting}
+        className="btn btn-ghost text-base font-semibold"
+      >
+        Continue with Google
+      </button>
+
+      <div className="text-base font-medium mt-2">
+      </div>
+    </div>
+  );
 }

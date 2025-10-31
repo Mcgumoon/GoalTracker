@@ -1,2 +1,108 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Base layer: ensure smooth font rendering and consistent spacing */
+@layer base {
+  html, body {
+    @apply min-h-screen bg-white text-text antialiased;
+  }
+}
+
+/* Components Layer - Reusable Styled Components */
+@layer components {
+
+  .page-auth { @apply max-w-2xl mx-auto text-center px-4 pt-14 md:pt-20 pb-16; }
+  .auth-card { @apply card bg-soft text-left mt-6; }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-xl px-4 py-2
+           transition-transform duration-150 ease-in-out active:translate-y-[1px] select-none;
+  }
+
+  .btn-primary {
+    @apply btn bg-violet text-white hover:bg-violet2 shadow-pastel;
+  }
+
+  .btn-outline {
+    @apply btn bg-white text-violet border-2 border-violet hover:bg-rose2/20;
+  }
+
+  .btn-ghost {
+    @apply btn bg-white text-text border-2 border-divider hover:bg-gray-50;
+  }
+
+  /* Inputs / Form Fields */
+  .input {
+    @apply w-full rounded-xl border-2 border-rose1/40 bg-white px-3 py-2 outline-none
+           focus:border-rose1 focus:ring-4 focus:ring-rose1/30 transition duration-150;
+  }
+
+  /* General Layout Wrappers */
+  .auth-shell {
+    @apply max-w-xl mx-auto text-center p-6;
+  }
+
+  /* Divider Lines */
+  .divider {
+    @apply my-6 h-px bg-divider;
+  }
+
+  /* Typography */
+  .h1 {
+    @apply text-2xl md:text-3xl font-extrabold text-text;
+  }
+
+  .subtle {
+    @apply text-sm text-muted;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-white border-2 border-rose1/40 rounded-2xl p-5 shadow-pastel;
+  }
+
+  .card-row {
+    @apply flex items-center justify-between py-2 border-b border-dashed border-divider last:border-b-0;
+  }
+
+  .card-label {
+    @apply text-muted mr-4;
+  }
+}
+
+/* Utility Layer - Custom Utilities & Gradients */
+@layer utilities {
+  /* Soft gradient background (used in Login/Register sections) */
+  .bg-soft {
+    @apply bg-gradient-to-b from-rose2/10 via-white to-rose1/10;
+  }
+
+  /* Sidebar transition & backdrop helpers */
+  .sidebar-enter {
+    @apply transition-transform duration-300 ease-out translate-x-0;
+  }
+
+  .sidebar-exit {
+    @apply -translate-x-full transition-transform duration-300 ease-in;
+  }
+
+  /* Shadows and glow effects for accents */
+  .shadow-pastel {
+    box-shadow: 0 8px 24px rgba(183, 143, 203, 0.18);
+  }
+
+  .shadow-pastelSm {
+    box-shadow: 0 1px 2px rgba(183, 143, 203, 0.30);
+  }
+
+  /* Smooth fade animation for overlays */
+  .fade-in {
+    @apply transition-opacity duration-300 ease-in-out opacity-100;
+  }
+
+  .fade-out {
+    @apply opacity-0 pointer-events-none;
+  }
+}

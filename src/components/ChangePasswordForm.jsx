@@ -1,144 +1,116 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { auth } from "../firebase";
 import {
-  EmailAuthProvider,
   reauthenticateWithCredential,
+  EmailAuthProvider,
   updatePassword,
 } from "firebase/auth";
+import { useAuth } from "../context/AuthContext";
 
 export default function ChangePasswordForm({ onSuccess, onCancel }) {
   const { user } = useAuth();
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNew, setConfirmNew] = useState("");
+  const [currentPw, setCurrentPw] = useState("");
+  const [newPw, setNewPw] = useState("");
+  const [confirmPw, setConfirmPw] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [message, setmessage] = useState("");
-  const [err, setErr] = useState("");
+  const [error, setError] = useState("");
+  const [ok, setOk] = useState("");
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setmessage("");
-    setErr("");
+    setError("");
+    setOk("");
 
     if (!user?.email) {
-      setErr("You must be logged in to change your password.");
+      setError("You must be logged in to change your password.");
       return;
     }
-    if (newPassword.length < 8) {
-      setErr("New password must be at least 8 characters.");
+    if (newPw !== confirmPw) {
+      setError("New passwords do not match.");
       return;
     }
-    if (newPassword !== confirmNew) {
-      setErr("New passwords do not match.");
+    if (newPw.length < 8) {
+      setError("Password must be at least 8 characters.");
       return;
     }
 
     try {
       setSubmitting(true);
-      const cred = EmailAuthProvider.credential(user.email, currentPassword);
-      await reauthenticateWithCredential(auth.currentUser, cred);
-
-      await updatePassword(auth.currentUser, newPassword);
-
-      setmessage("Password changed successfully.");
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmNew("");
-      if (typeof onSuccess === "function") {
-        onSuccess();
-      }
-    } catch (e2) {
-      const message =
-        e2?.code === "auth/wrong-password"
-          ? "Current password is incorrect."
-          : e2?.code === "auth/weak-password"
-            ? "New password is too weak."
-            : e2?.code === "auth/requires-recent-login"
-              ? "For security, please log out and log back in, then try again."
-              : e2?.message || "Failed to change password.";
-      setErr(message);
+      // Re-authenticate
+      const cred = EmailAuthProvider.credential(user.email, currentPw);
+      await reauthenticateWithCredential(user, cred);
+      // Update
+      await updatePassword(user, newPw);
+      setOk("Password updated successfully.");
+      setCurrentPw("");
+      setNewPw("");
+      setConfirmPw("");
+      onSuccess?.();
+    } catch (err) {
+      setError(err?.message || "Could not update password. Please try again.");
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  const handleCancel = () => {
-    if (typeof onCancel === "function") {
-      onCancel();
     }
   }
 
   return (
-    <section className="">
-      <h2 className="">Change Password</h2>
-
-      {message && (
-        <div className="">
-          {message}
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-left">
+      {error && (
+        <div className="rounded-xl border-2 border-rose3/40 bg-rose2/40 text-[#7a0031] text-sm px-3 py-2">
+          {error}
         </div>
       )}
-      {err && (
-        <div className="">
-          {err}
+      {ok && (
+        <div className="rounded-xl border-2 border-green-200 bg-green-100 text-green-800 text-sm px-3 py-2">
+          {ok}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex flex-col">
-          <label className="">Current password</label>
-          <input
-            type="password"
-            className="border rounded-md"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            required
-            autoComplete="current-password"
-          />
-        </div>
+      <div>
+        <label className="subtle block mb-1">Current password</label>
+        <input
+          type="password"
+          className="input"
+          placeholder="Current password"
+          value={currentPw}
+          onChange={(e) => setCurrentPw(e.target.value)}
+          required
+        />
+      </div>
 
-        <div className="flex flex-col">
-          <label className="">New password</label>
-          <input
-            type="password"
-            className="border rounded-md"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-            minLength={8}
-            autoComplete="new-password"
-          />
-        </div>
+      <div>
+        <label className="subtle block mb-1">New password</label>
+        <input
+          type="password"
+          className="input"
+          placeholder="New password"
+          value={newPw}
+          onChange={(e) => setNewPw(e.target.value)}
+          minLength={8}
+          required
+        />
+      </div>
 
-        <div className="flex flex-col">
-          <label className="">Confirm new password</label>
-          <input
-            type="password"
-            className="border rounded-md"
-            value={confirmNew}
-            onChange={(e) => setConfirmNew(e.target.value)}
-            required
-            minLength={8}
-            autoComplete="new-password"
-          />
-        </div>
-        <div>
-          <button
-            type="submit"
-            disabled={submitting}
-            className="rounded-md bg-purple-600 text-white"
-          >
-            {submitting ? "Updating..." : "Update Password"}
-          </button>
-          <button 
-          type="button"
-          onClick={handleCancel}
-          className="rounded-md bg-purple-800 text-white"
-          >
-            Cancel 
-          </button>
-        </div>
-      </form>
-    </section>
+      <div>
+        <label className="subtle block mb-1">Confirm new password</label>
+        <input
+          type="password"
+          className="input"
+          placeholder="Confirm new password"
+          value={confirmPw}
+          onChange={(e) => setConfirmPw(e.target.value)}
+          minLength={8}
+          required
+        />
+      </div>
+
+      <div className="flex gap-3 pt-2">
+        <button type="submit" disabled={submitting} className="btn btn-primary">
+          {submitting ? "Updating..." : "Update Password"}
+        </button>
+        <button type="button" onClick={onCancel} className="btn btn-outline">
+          Cancel
+        </button>
+      </div>
+    </form>
   );
 }
