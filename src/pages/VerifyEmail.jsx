@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendEmailVerification } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
+import LogoHero from "../components/LogoHero";
 
 export default function VerifyEmail() {
   const { user } = useAuth();
@@ -42,29 +43,42 @@ export default function VerifyEmail() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center">
-      <h1 className="text-2xl font-semibold mb-4">Verify Your Email</h1>
-      <p className="text-gray-700 max-w-md mb-4">
-        A verification link has been sent to your email. Please verify your
-        address before continuing.
+    <section className="min-h-[80vh] flex flex-col justify-center items-center text-center px-4">
+      <LogoHero size={100} />
+      <h1 className="text-3xl md:text-4xl font-extrabold mt-6 mb-2">Verify your email</h1>
+      <p className="subtle text-base">
+        We sent a verification link to{" "}
+        <span className="font-semibold text-gray-800">{user?.email || "your email"}</span>.
       </p>
+      <p className="subtle mb-8">Please verify to access the app.</p>
 
-      <div className="flex gap-4">
-        <button
-          onClick={handleResend}
-          className="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-400"
-        >
-          Resend Email
+      <div className="w-full max-w-md">
+        {err && (
+          <div className="rounded-xl border-2 border-rose3/40 bg-rose2/40 text-[#7a0031] text-sm px-3 py-2 mb-4">
+            {err}
+          </div>
+        )}
+        {msg && (
+          <div className="rounded-xl border-2 border-green-200 bg-green-100 text-green-800 text-sm px-3 py-2 mb-4">
+            {msg}
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
+        <button onClick={resend} disabled={sending} className="btn btn-primary">
+          {sending ? "Sending..." : "Resend verification email"}
         </button>
-        <button
+         <button
           onClick={handleCheckStatus}
-          className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-400"
+          className="btn btn-outline"
         >
           I Verified My Email
         </button>
+        {/* <button onClick={() => navigate("/login")} className="btn btn-outline">
+          Back to login
+        </button> */}
       </div>
-
-      {message && <p className="mt-4 text-sm text-gray-600">{message}</p>}
-    </div>
+    </section>
   );
 }
