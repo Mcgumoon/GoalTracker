@@ -14,6 +14,7 @@ import {
   updatePassword
 } from "firebase/auth";
 import { auth } from "../firebase"; 
+import { ensureUserDoc } from "../utils/ensureUserDocs";
 
 const AuthContext = createContext(null);
 
@@ -74,14 +75,21 @@ export function AuthProvider({ children }) {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     if (displayName) await updateProfile(cred.user, { displayName });
     await sendEmailVerification(cred.user);
+    await ensureUserDoc(cred.user.uid);
     return cred.user;
   };
 
-  const login = (email, password) => signInWithEmailAndPassword(auth, email, password);
+  const login = async (email, password) => {
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    await ensureUserDoc(res.user.uid);
+    return res.user;
+  };
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const res = await signInWithPopup(auth, provider);
+    await ensureUserDoc(res.user.uid);
+
     return res.user;
   };
 
