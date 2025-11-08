@@ -70,14 +70,14 @@ export default function useGoals() {
         const userRef = base.userDoc;
 
         await runTransaction(db, async (tx) => {
-            // READS (all of them) — do these before any write:
+            
             const [gSnap, uSnap] = await Promise.all([tx.get(goalRef), tx.get(userRef)]);
             if (!gSnap.exists()) return;
 
             const wasCompleted = !!gSnap.data().completed;
             const prevPoints = Number(uSnap.data()?.points || 0);
 
-            // WRITES — after all reads:
+            
             tx.delete(goalRef);
 
             if (wasCompleted) {
