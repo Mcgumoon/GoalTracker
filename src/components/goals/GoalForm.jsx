@@ -4,6 +4,7 @@ export default function GoalForm({ initial, onSubmit, onCancel }) {
     const [title, setTitle] = useState(initial?.title || "");
     const [notes, setNotes] = useState(initial?.notes || "");
     const [dueDate, setDueDate] = useState(initial?.dueDate || "");
+    const [category, setCategory] = useState(initial?.category || "Uncategorized");
     const [busy, setBusy] = useState(false);
     const [err, setErr] = useState("");
 
@@ -11,16 +12,17 @@ export default function GoalForm({ initial, onSubmit, onCancel }) {
         setTitle(initial?.title || "");
         setNotes(initial?.notes || "");
         setDueDate(initial?.dueDate || "");
+        setCategory(initial?.category || "Uncategorized");
     }, [initial]);
 
     const submit = async (e) => {
         e.preventDefault();
         setErr("");
-        if(!title.trim()) return setErr("Title is required");
+        if (!title.trim()) return setErr("Goal is required");
         try {
             setBusy(true);
-            await onSubmit({ title: title.trim(), notes: notes.trim(), dueDate: dueDate || "",});
-            if(!initial) { setTitle(""); setNotes(""); setDueDate("");}
+            await onSubmit({ title: title.trim(), notes: notes.trim(), dueDate: dueDate || "", category: (category || "Uncategorized").trim() });
+            if (!initial) { setTitle(""); setNotes(""); setDueDate(""); setCategory(""); }
         } catch (e) {
             setErr(e?.message || "Could not save goal.");
         } finally {
@@ -32,19 +34,31 @@ export default function GoalForm({ initial, onSubmit, onCancel }) {
         <form onSubmit={submit} className="">
             {err && (<div className="">{err}</div>)}
             <div>
-                <label className="">Title</label>
-                <input 
+                <label className="">Category</label>
+                <select className="" value={category} onChange={(e) => setCategory(e.target.value)}>
+                    <option>Home</option>
+                    <option>Groceries</option>
+                    <option>Errands</option>
+                    <option>Health</option>
+                    <option>Beauty</option>
+                    <option>Uncategorized</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div>
+                <label className="">Goal</label>
+                <input
                     className=""
                     placeholder="i.e. Read 10 pages"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)} 
+                    onChange={(e) => setTitle(e.target.value)}
                     autoFocus
                     required
                 />
             </div>
             <div>
                 <label className="">Notes (optional)</label>
-                <textarea 
+                <textarea
                     className=""
                     placeholder="Context or steps..."
                     value={notes}
@@ -53,14 +67,15 @@ export default function GoalForm({ initial, onSubmit, onCancel }) {
             </div>
             <div>
                 <label className="">Due Date</label>
-                <input 
-                    type="date" 
+                <input
+                    type="date"
                     className=""
                     value={dueDate}
-                    onChange={(e) => setDueDate(e.target.value)} 
+                    onChange={(e) => setDueDate(e.target.value)}
                     required
                 />
             </div>
+
             <div className="">
                 <button type="submit" className="" disabled={busy}>{busy ? "Saving..." : "Save Goal"}</button>
                 {onCancel && (

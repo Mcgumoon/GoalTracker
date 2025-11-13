@@ -28,7 +28,7 @@ export default function useGoals() {
         return () => unsub();
     }, [base]);
 
-    const createGoal = useCallback(async ({ title, notes, dueDate }) => {
+    const createGoal = useCallback(async ({ title, notes, dueDate, category }) => {
         if (!base) throw new Error("Not authenticated");
 
         const cleanTitle = String(title || "").trim();
@@ -37,10 +37,12 @@ export default function useGoals() {
             dueDate && String(dueDate).trim()
                 ? Timestamp.fromDate(new Date(String(dueDate).trim() + "T00:00:00"))
                 : null;
+        const cleanCat = String(category || "Uncategorized").trim() || "Uncategorized";
 
         await addDoc(base.goalsCol, {
             title: cleanTitle,
             notes: cleanNotes,
+            category: cleanCat,
             dueDate: cleanDue,
             completed: false,
             createdAt: serverTimestamp(),
@@ -48,12 +50,13 @@ export default function useGoals() {
         });
     }, [base]);
 
-    const editGoal = useCallback(async (id, { title, notes, dueDate }) => {
+    const editGoal = useCallback(async (id, { title, notes, dueDate, category }) => {
         if (!base) throw new Error("Not authenticated");
 
         const patch = { updatedAt: serverTimestamp() };
         if (title !== undefined) patch.title = String(title).trim();
         if (notes !== undefined) patch.notes = String(notes).trim();
+        if (category !== undefined) patch.category = String(category || "Uncategorized").trim() || "Uncategorized";
 
         if (dueDate !== undefined) {
             patch.dueDate = dueDate && dueDate.trim() ? Timestamp.fromDate(new Date(dueDate.trim() + "T00:00:00"))

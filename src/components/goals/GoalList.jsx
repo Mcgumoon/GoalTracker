@@ -22,6 +22,15 @@ export default function GoalList({ goals, onEdit, onRemove, onToggle, stats }) {
     const points = stats?.points ?? 0;
     const badges = stats?.badges_count ?? 0;
 
+    const grouped = goals.reduce((acc, g) => {
+        const cat = (g.category || "Uncategorized").trim() || "Uncategorized";
+        acc[cat] ||=[];
+        acc[cat].push(g);
+        return acc;
+    }, {});
+
+    const categories = Object.keys(grouped).sort((a,b) => a.localeCompare(b));
+
     return (
         <div className="">
             <div className="">
@@ -31,15 +40,23 @@ export default function GoalList({ goals, onEdit, onRemove, onToggle, stats }) {
                     <p className="">No goals yet. Click “New Goal”.</p>
                 ) : (
                     <ul className="">
-                        {goals.map((g) => (
-                            <GoalItem
-                                key={g.id}
-                                goal={g}
-                                onEdit={onEdit}
-                                onRemove={onRemove}
-                                onToggle={onToggle}
-                                stats={{points, badges}}
-                            />
+                        {categories.map((cat) => (
+                            <div key={cat} className="">
+                                <div className="">
+                                    {cat}-Goals: {grouped[cat].length}
+                                </div>
+                                <ul className="">
+                                    {grouped[cat].map((g) => (
+                                        <GoalItem
+                                            key={g.id}
+                                            goal={g}
+                                            onEdit={onEdit}
+                                            onRemove={onRemove}
+                                            onToggle={onToggle} 
+                                        />
+                                    ))}
+                                </ul>
+                            </div>
                         ))}
                     </ul>
                 )}
@@ -52,6 +69,7 @@ function GoalItem({ goal, onEdit, onRemove, onToggle }) {
     const [editing, setEditing] = useState(false);
     const [pendingToggle, setPendingToggle] = useState(false);
     const prettyDate = toPrettyDate(goal.dueDate);
+    const category = (goal.category || "Uncategorized");
 
     return (
         <li className="">
@@ -118,6 +136,7 @@ function GoalItem({ goal, onEdit, onRemove, onToggle }) {
                             title: goal.title ?? "",
                             notes: goal.notes ?? "",
                             dueDate: toInputDate(goal.dueDate),
+                            category: category,
                         }}
                         onSubmit={async (data) => {
                             await onEdit(goal.id, data);
