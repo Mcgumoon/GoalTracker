@@ -8,7 +8,6 @@ export default function VerifyEmail() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const [sending, setSend] = useState(false);
 
   useEffect(() => {
     if(!user) {
@@ -22,14 +21,8 @@ export default function VerifyEmail() {
   }, [user, navigate]);
 
   const handleResend = async () => {
-    if(!user) {
-      setMessage("You must be logged in to resend verification.");
-      return;
-    }
-
     try {
       if (user) {
-        setSend(true);
         await sendEmailVerification(user);
         setMessage("Verification email resent! Please check your inbox.");
       } else {
@@ -37,23 +30,17 @@ export default function VerifyEmail() {
       }
     } catch (err) {
       setMessage(err.message || "Error sending verification email.");
-    } finally {
-      setSend(false);
     }
   };
 
   const handleCheckStatus = async () => {
-    try {
-      await user.reload(); 
-      if (user.emailVerified) {
+    await user.reload(); 
+    if (user.emailVerified) {
       navigate("/home");
     } else {
       setMessage("Email not verified yet. Please check your inbox.");
     }
-  } catch (err) {
-      setMessage(err?.message || "Could not refresh verification status.");
-    }}
-  
+  };
 
   return (
     <section className="min-h-[80vh] flex flex-col justify-center items-center text-center px-4">
@@ -63,18 +50,23 @@ export default function VerifyEmail() {
         We sent a verification link to{" "}
         <span className="font-semibold text-gray-800">{user?.email || "your email"}</span>.
       </p>
-      <p className="subtle mb-8">Please verify to access the web app.</p>
+      <p className="subtle mb-8">Please verify to access the app.</p>
 
       <div className="w-full max-w-md">
-        {message && (
+        {err && (
           <div className="rounded-xl border-2 border-rose3/40 bg-rose2/40 text-[#7a0031] text-sm px-3 py-2 mb-4">
-            {message}
+            {err}
+          </div>
+        )}
+        {msg && (
+          <div className="rounded-xl border-2 border-green-200 bg-green-100 text-green-800 text-sm px-3 py-2 mb-4">
+            {msg}
           </div>
         )}
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
-        <button onClick={handleResend} disabled={sending} className="btn btn-primary">
+        <button onClick={resend} disabled={sending} className="btn btn-primary">
           {sending ? "Sending..." : "Resend verification email"}
         </button>
          <button
@@ -83,6 +75,9 @@ export default function VerifyEmail() {
         >
           I Verified My Email
         </button>
+        {/* <button onClick={() => navigate("/login")} className="btn btn-outline">
+          Back to login
+        </button> */}
       </div>
     </section>
   );
