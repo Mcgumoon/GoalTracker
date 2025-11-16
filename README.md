@@ -1,16 +1,67 @@
-# React + Vite
+GoalTracker ✨
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean React + Vite app to create, organize, and complete your goals. Finishing goals earns points and unlocks badges. Organize by category for easy focus.
 
-Currently, two official plugins are available:
+✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+➕ Create, ✏️ edit, 🗑️ delete goals
 
-## React Compiler
+✅ Mark goals as completed (earns 1 point)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🗂️ Categories for grouping/filtering
 
-## Expanding the ESLint configuration
+🏅 Badges (simple logic, easy to extend)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🎨 Tailwind UI, minimal and responsive
+
+🧭 Branches
+
+This repo uses three working branches: ash_code, eg_code, and main.
+
+🚀 Quick Start
+# 1) install
+npm install
+
+# 2) run dev server
+npm run dev
+
+# 3) build / preview
+npm run build
+npm run preview
+
+
+💡 Uses Firebase (Auth/Firestore). Add your usual env settings as you prefer.
+
+🗂️ Project Structure (high level)
+src/
+  components/   # UI pieces like GoalForm, GoalList, BadgePanel, CategoryFilter
+  hooks/        # useGoals, etc.
+  context/      # Auth context
+  firebase.js   # app/bootstrap
+  App.jsx
+  main.jsx
+public/
+
+🧱 Data Model (example)
+{
+  "title": "Study Chapter 5",
+  "notes": "Focus on proofs",
+  "category": "School",
+  "dueDate": "2025-11-20T00:00:00.000Z",
+  "completed": false,
+  "createdAt": "serverTimestamp",
+  "updatedAt": "serverTimestamp",
+  "pointsAwarded": 0
+}
+
+🖼️ Screenshots
+
+Login:
+
+Goals:
+
+🗺️ Roadmap
+
+🏆 Leaderboard
+
+🔁 Streak badges
