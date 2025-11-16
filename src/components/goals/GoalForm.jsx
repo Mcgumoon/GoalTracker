@@ -1,4 +1,3 @@
-// src/components/goals/GoalForm.jsx
 import { useEffect, useState } from "react";
 
 export default function GoalForm({ initial, onSubmit, onCancel }) {
@@ -88,7 +87,7 @@ export default function GoalForm({ initial, onSubmit, onCancel }) {
             <div className="flex items-center gap-3 mt-2">
                 <button
                     type="submit"
-                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-pink-400 px-5 py-2 text-sm font-semibold text-white shadow-md hover:scale-[1.02] transform transition"
+                    className="inline-flex items-center justify-center rounded-full btn-gradient px-5 py-2 text-sm font-semibold shadow-md hover:scale-[1.02] transform transition"
                     disabled={busy}
                 >
                     {busy ? "Saving..." : "Save Goal"}

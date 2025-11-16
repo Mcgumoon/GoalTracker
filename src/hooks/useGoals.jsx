@@ -69,8 +69,6 @@ export default function useGoals() {
         [base]
     );
 
-    // BEFORE:
-    // const editGoal = useCallback(async (id, { title, notes, dueDate }) => {
 
     const editGoal = useCallback(
         async (id, { title, notes, dueDate, category }) => {

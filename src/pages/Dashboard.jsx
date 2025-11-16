@@ -63,7 +63,7 @@ export default function Dashboard() {
         {/* Right: New Goal button */}
         <div className="flex-shrink-0">
           <button
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-400 px-4 py-2 text-sm font-semibold text-white shadow hover:scale-[1.02] transform transition"
+            className="btn btn-gradient rounded-full px-4 py-2 text-sm"
             onClick={() => setOpenNew(true)}
           >
             New Goal
