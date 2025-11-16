@@ -31,11 +31,16 @@ export default function GoalForm({ initial, onSubmit, onCancel }) {
     };
 
     return (
-        <form onSubmit={submit} className="">
-            {err && (<div className="">{err}</div>)}
-            <div>
-                <label className="">Category</label>
-                <select className="" value={category} onChange={(e) => setCategory(e.target.value)}>
+        <form onSubmit={submit} className="w-full">
+            {err && (<div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 p-2 rounded">{err}</div>)}
+
+            <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-600 mb-2">Category</label>
+                <select
+                    className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-200"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                >
                     <option>Home</option>
                     <option>Groceries</option>
                     <option>Errands</option>
@@ -45,10 +50,11 @@ export default function GoalForm({ initial, onSubmit, onCancel }) {
                     <option>Other</option>
                 </select>
             </div>
-            <div>
-                <label className="">Goal</label>
+
+            <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-600 mb-2">Goal</label>
                 <input
-                    className=""
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-200"
                     placeholder="i.e. Read 10 pages"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -56,30 +62,46 @@ export default function GoalForm({ initial, onSubmit, onCancel }) {
                     required
                 />
             </div>
-            <div>
-                <label className="">Notes (optional)</label>
+
+            <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-600 mb-2">Notes (optional)</label>
                 <textarea
-                    className=""
+                    className="w-full min-h-[86px] rounded-lg border border-gray-200 px-3 py-2 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-200"
                     placeholder="Context or steps..."
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                 />
             </div>
-            <div>
-                <label className="">Due Date</label>
+
+            <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-600 mb-2">Due Date</label>
                 <input
                     type="date"
-                    className=""
+                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-200"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
                     required
                 />
             </div>
 
-            <div className="">
-                <button type="submit" className="" disabled={busy}>{busy ? "Saving..." : "Save Goal"}</button>
+            <div className="flex items-center gap-3 mt-2">
+                <button
+                    type="submit"
+                    className="inline-flex items-center justify-center rounded-full btn-gradient px-5 py-2 text-sm font-semibold shadow-md hover:scale-[1.02] transform transition"
+                    disabled={busy}
+                >
+                    {busy ? "Saving..." : "Save Goal"}
+                </button>
+
                 {onCancel && (
-                    <button type="button" onClick={onCancel} className="" disabled={busy}>Cancel</button>
+                    <button
+                        type="button"
+                        onClick={onCancel}
+                        className="rounded-full border border-purple-200 px-4 py-2 text-sm text-purple-600 hover:bg-purple-50 transition"
+                        disabled={busy}
+                    >
+                        Cancel
+                    </button>
                 )}
             </div>
         </form>

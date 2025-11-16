@@ -83,7 +83,7 @@ export default function Navbar() {
                         className="no-underline flex items-center gap-2 group transition-transform duration-300"
                     >
                         {/* Mini Logo */}
-                        <span className=" inline-flex items-center justify-center select-none rounded-lg text-white font-extrabold tracking-wide bg-gradient-to-br from-rose2 via-rose3 to-violet shadow-[0_4px_12px_rgba(183,143,203,0.35)] ring-1 ring-rose3/50 group-hover:scale-110 group-hover:shadow-pastel transition-all duration-300 ease-out" style={{ width: 32, height: 32, fontSize: 14, lineHeight: 1,}} aria-hidden="true" title="GT">
+                        <span className=" inline-flex items-center justify-center select-none rounded-lg text-white font-extrabold tracking-wide bg-gradient-to-br from-rose2 via-rose3 to-violet shadow-pastelSm-[0_4px_12px_rgba(183,143,203,0.35)] ring-1 ring-rose3/50 group-hover:scale-110 group-hover:shadow-pastelSm transition-all duration-300 ease-out" style={{ width: 32, height: 32, fontSize: 14, lineHeight: 1,}} aria-hidden="true" title="GT">
                             GT
                         </span>
 
@@ -117,6 +117,7 @@ export default function Navbar() {
                         <nav className="p-4 flex flex-col gap-2">
                             <NavLink to="/" className={itemClass} onClick={close}>Home</NavLink>
                             <NavLink to="/settings" className={itemClass} onClick={close}>Settings</NavLink>
+                            <div className="divider" />
                             <button
                                 onClick={() => { logout(); close(); }}
                                 className="text-left mt-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white"

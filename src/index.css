@@ -33,6 +33,46 @@
     @apply btn bg-white text-text border-2 border-divider hover:bg-gray-50;
   }
 
+  /* .btn-gradient {
+    background-image: linear-gradient(
+      to right,
+      theme('colors.violet'),
+      theme('colors.rose3')
+    ) !important;
+    color: #fff !important;
+    background-color: transparent !important;
+  } */
+
+  /* Optional: nicer disabled state without losing the gradient */
+  /* .btn-gradient:disabled {
+    filter: saturate(0.85) brightness(0.98);
+    opacity: 0.85;
+  } */
+
+  .badge-gradient-gold { 
+    background: linear-gradient(135deg, #f6d365, #fda085) !important; /* gold → peach */
+    color: #fff !important;
+  }
+
+  .btn-gradient,
+  .btn-gradient:hover,
+  .btn-gradient:focus-visible,
+  .btn-gradient:active {
+    background: linear-gradient(
+      to right,
+      theme('colors.violet'),
+      theme('colors.rose3')
+    ) !important;
+    color: #fff !important;
+    background-color: transparent !important; /* defeats bg-white/bg-... */
+  }
+
+  .btn-gradient:disabled {
+    filter: saturate(0.85) brightness(0.98);
+    opacity: 0.85;
+  }
+  
+
   /* Inputs / Form Fields */
   .input {
     @apply w-full rounded-xl border-2 border-rose1/40 bg-white px-3 py-2 outline-none
@@ -70,6 +110,15 @@
   .card-label {
     @apply text-muted mr-4;
   }
+
+   .tile-gradient,
+  .tile-gradient:hover {
+    background: linear-gradient(
+      135deg,
+      theme('colors.rose2'),
+      theme('colors.violet')
+    ) !important;
+  }
 }
 
 /* Utility Layer - Custom Utilities & Gradients */
@@ -78,6 +127,9 @@
   .bg-soft {
     @apply bg-gradient-to-b from-rose2/10 via-white to-rose1/10;
   }
+  /* .btn-gradient {
+    @apply bg-gradient-to-r from-violet to-rose3 text-white;
+  } */
 
   /* Sidebar transition & backdrop helpers */
   .sidebar-enter {
@@ -104,5 +156,30 @@
 
   .fade-out {
     @apply opacity-0 pointer-events-none;
+  }
+
+  .shadow-pastel {
+    @apply shadow-[0_18px_30px_rgba(199,139,255,0.12)];
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s infinite ease-in-out;
+  }
+
+  /* pop animation for badge when count increases */
+  @keyframes badge-pop {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.18); }
+    60% { transform: scale(0.98); }
+    100% { transform: scale(1); }
+  }
+
+  .badge-pop {
+    animation: badge-pop 560ms cubic-bezier(.2,.9,.3,1);
   }
 }
