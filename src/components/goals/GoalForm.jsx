@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Categories } from "../../constants";
 
 export default function GoalForm({ initial, onSubmit, onCancel }) {
     const [title, setTitle] = useState(initial?.title || "");
@@ -41,13 +42,19 @@ export default function GoalForm({ initial, onSubmit, onCancel }) {
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                 >
+                   {Categories.map((cat) => (
+                    <option key={cat}>{cat}</option>
+                    ))}
+                    {/* <option>Fitness</option>
                     <option>Home</option>
                     <option>Groceries</option>
                     <option>Errands</option>
                     <option>Health</option>
                     <option>Beauty</option>
-                    <option>Uncategorized</option>
+                    <option>Homework</option>
+                    <option>Work</option>
                     <option>Other</option>
+                    <option>Uncategorized</option> */}
                 </select>
             </div>
 

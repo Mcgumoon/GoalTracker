@@ -26,8 +26,22 @@ export default function GoalList({
   onToggle,
   stats,
 }) {
-  const incomplete = goals.filter((g) => !g.completed);
-  const completed = goals.filter((g) => g.completed);
+
+  const imcompletedGoals = goals.filter((g) => !g.completed);
+  const completedGoals = goals.filter((g) => g.completed);
+
+  const incomplete = imcompletedGoals.sort((a, b) => {
+  const aDue = a.dueDate?.toDate ? a.dueDate.toDate() : new Date(a.dueDate.seconds * 1000);
+  const bDue = b.dueDate?.toDate ? b.dueDate.toDate() : new Date(b.dueDate.seconds * 1000);
+  return aDue - bDue; 
+});
+  const completed = completedGoals.sort((a, b) => {
+  const aDue = a.dueDate?.toDate ? a.dueDate.toDate() : new Date(a.dueDate.seconds * 1000);
+  const bDue = b.dueDate?.toDate ? b.dueDate.toDate() : new Date(b.dueDate.seconds * 1000);
+  return aDue - bDue;
+});
+
+
 
   return (
     <div className="w-full">
@@ -217,7 +231,7 @@ function GoalItem({ goal, onEdit, onRemove, onToggle }) {
       {editing && (
         <div className="mt-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
           <GoalForm
-            initial={{
+            initial={{ 
               title: goal.title ?? "",
               notes: goal.notes ?? "",
               dueDate: toInputDate(goal.dueDate),
