@@ -28,18 +28,41 @@ export default function GoalList({
 }) {
 
   const imcompletedGoals = goals.filter((g) => !g.completed);
-  const completedGoals = goals.filter((g) => g.completed);
+
+// 48 hours in ms
+const FORTY_EIGHT_HOURS = 48 * 60 * 60 * 1000;
+const now = Date.now();
+
+const completedGoals = goals.filter((g) => {
+  if (!g.completed) return false;
+
+  const updated = g.updatedAt?.toDate
+    ? g.updatedAt.toDate()
+    : new Date(g.updatedAt.seconds * 1000);
+
+  const diffMs = now - updated.getTime();
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+  const keep = diffMs <= FORTY_EIGHT_HOURS;
+
+  // DO NOT REMOVE UNTIL WE HAVE A 48HRS EXAMPLE
+  console.log(`Goal "${g.title}" updated ${diffHours}h ago → ${keep ? "KEPT" : "FILTERED OUT"}`);
+
+  return keep;
+});
 
   const incomplete = imcompletedGoals.sort((a, b) => {
-  const aDue = a.dueDate?.toDate ? a.dueDate.toDate() : new Date(a.dueDate.seconds * 1000);
-  const bDue = b.dueDate?.toDate ? b.dueDate.toDate() : new Date(b.dueDate.seconds * 1000);
-  return aDue - bDue; 
-});
+    const aDue = a.dueDate?.toDate ? a.dueDate.toDate() : new Date(a.dueDate.seconds * 1000);
+    const bDue = b.dueDate?.toDate ? b.dueDate.toDate() : new Date(b.dueDate.seconds * 1000);
+    return aDue - bDue;
+  });
   const completed = completedGoals.sort((a, b) => {
-  const aDue = a.dueDate?.toDate ? a.dueDate.toDate() : new Date(a.dueDate.seconds * 1000);
-  const bDue = b.dueDate?.toDate ? b.dueDate.toDate() : new Date(b.dueDate.seconds * 1000);
-  return aDue - bDue;
-});
+    const aDue = a.dueDate?.toDate ? a.dueDate.toDate() : new Date(a.dueDate.seconds * 1000);
+    const bDue = b.dueDate?.toDate ? b.dueDate.toDate() : new Date(b.dueDate.seconds * 1000);
+    return aDue - bDue;
+  });
+
+  console.log('completed: ', completed);
 
 
 
@@ -154,11 +177,10 @@ function GoalItem({ goal, onEdit, onRemove, onToggle }) {
   return (
     <li>
       <div
-        className={`flex items-start gap-4 rounded-lg border p-4 transition ${
-          goal.completed
+        className={`flex items-start gap-4 rounded-lg border p-4 transition ${goal.completed
             ? "border-gray-200 bg-gray-50"
             : "border-pink-100 bg-white"
-        }`}
+          }`}
       >
         {/* checkbox */}
         <div className="pt-1">
@@ -183,11 +205,10 @@ function GoalItem({ goal, onEdit, onRemove, onToggle }) {
         <div className="flex-1">
           <div className="flex items-center justify-between">
             <span
-              className={`text-sm font-medium ${
-                goal.completed
+              className={`text-sm font-medium ${goal.completed
                   ? "line-through text-gray-500"
                   : "text-gray-800"
-              }`}
+                }`}
             >
               {goal.title}
             </span>
@@ -231,7 +252,7 @@ function GoalItem({ goal, onEdit, onRemove, onToggle }) {
       {editing && (
         <div className="mt-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
           <GoalForm
-            initial={{ 
+            initial={{
               title: goal.title ?? "",
               notes: goal.notes ?? "",
               dueDate: toInputDate(goal.dueDate),
