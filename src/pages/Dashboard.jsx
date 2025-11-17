@@ -16,6 +16,7 @@ export default function Dashboard() {
   const [points, setPoints] = useState(0);
   const [badges, setBadges] = useState(0);
   const [openNew, setOpenNew] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -87,6 +88,9 @@ export default function Dashboard() {
           <div className="space-y-4">
             <GoalList
               goals={goals}
+              mode="dashboard"
+              showCompleted={showCompleted}
+              setShowCompleted={setShowCompleted}
               onCreate={createGoal}
               onEdit={editGoal}
               onRemove={removeGoal}

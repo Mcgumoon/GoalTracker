@@ -10,10 +10,10 @@ export default function Navbar() {
     const toggle = () => setOpen(v => !v);
     const close = () => setOpen(false);
 
-    // Close when navigating
+    
     useEffect(() => { close(); }, [location.pathname]);
 
-    // Close on ESC
+    
     useEffect(() => {
         if (!open) return;
         const onKey = (e) => e.key === "Escape" && close();
@@ -30,7 +30,7 @@ export default function Navbar() {
             {/* Top bar */}
             <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-divider h-16">
                 <div className="h-full px-4 flex items-center gap-3">
-                    {/* Hamburger (only when authenticated) */}
+                   
                     {user ? (
                         <button
                             type="button"
@@ -41,7 +41,7 @@ export default function Navbar() {
                             className="h-10 w-10 inline-flex items-center justify-center rounded-xl bg-white/70 hover:bg-white
                          shadow-pastelSm active:translate-y-[1px] transition"
                         >
-                            {/* Animated hamburger -> X using 3 lines */}
+                           
                             <span className="relative block h-5 w-6">
                                 <span
                                     className={`absolute left-0 top-0 h-0.5 w-6 rounded bg-[#6f3f83] transition-transform duration-300
@@ -61,23 +61,6 @@ export default function Navbar() {
                         <div className="w-10" />
                     )}
 
-                    {/* Brand with tiny gradient LogoMini */}
-                    {/* <Link
-            to={user ? "/" : "/login"}
-            className="no-underline flex items-center gap-2"
-          >
-                        <span
-              className="inline-flex items-center justify-center rounded-lg
-                         bg-gradient-to-br from-rose2 to-violet text-white font-extrabold"
-              style={{ width: 28, height: 28, fontSize: 12 }}
-              aria-hidden="true"
-              title="GT"
-            >
-              GT
-            </span>
-
-            <span className="font-extrabold text-violet text-xl">Goal Tracker</span>
-          </Link> */}
                     <Link
                         to={user ? "/" : "/login"}
                         className="no-underline flex items-center gap-2 group transition-transform duration-300"
@@ -95,7 +78,7 @@ export default function Navbar() {
                 </div>
             </header>
 
-            {/* Drawer + backdrop (only when authenticated) */}
+            
             {user && (
                 <>
                     {/* Backdrop */}
@@ -105,7 +88,7 @@ export default function Navbar() {
                         ${open ? "opacity-100" : "opacity-0 pointer-events-none"}`}
                     />
 
-                    {/* Drawer */}
+                   
                     <aside
                         id="app-drawer"
                         className={`fixed z-40 top-0 left-0 h-full w-64 bg-violet 
@@ -117,6 +100,7 @@ export default function Navbar() {
                         <nav className="p-4 flex flex-col gap-2">
                             <NavLink to="/" className={itemClass} onClick={close}>Home</NavLink>
                             <NavLink to="/settings" className={itemClass} onClick={close}>Settings</NavLink>
+                            <NavLink to="/completed-goal-history" className={itemClass} onClick={close}>Completed Goal History</NavLink>
                             <div className="divider" />
                             <button
                                 onClick={() => { logout(); close(); }}

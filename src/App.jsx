@@ -9,6 +9,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import ChangePassword from "./pages/ChangePassword";
+import CompletedHistory from "./pages/CompletedHistory";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -42,6 +43,15 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/completed-goal-history"
+        element={
+          <ProtectedRoute>
+            <Shell>
+              <CompletedHistory />
+            </Shell>
+          </ProtectedRoute>
+        } />
       <Route
         path="/change-password"
         element={
