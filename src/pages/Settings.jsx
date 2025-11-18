@@ -78,6 +78,16 @@ export default function Settings() {
                     >
                         Change Password
                     </Link>
+                    <button
+                        onClick={() => {
+                            alert("Delete account clicked"); //placeholder -- Add deletion logic here
+                        }}
+                        className="inline-flex items-center justify-center gap-2 font-semibold rounded-xl px-4 py-2 
+                                transition-transform duration-150 ease-in-out active:translate-y-[1px] select-none
+                                bg-red-600 text-white hover:bg-red-700 shadow-md"
+                    >
+                        Delete Account
+                    </button>
                 </div>
             </div>
         </section>
