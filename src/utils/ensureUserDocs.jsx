@@ -10,6 +10,7 @@ export async function ensureUserDoc(uid) {
     await setDoc(ref, { 
       points: 0,
       badges_count: 0,
+      disabled: false,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -20,6 +21,7 @@ export async function ensureUserDoc(uid) {
   const patch = {};
   if(typeof data.points !== "number") patch.points = 0;
   if(typeof data.badges_count !== "number") patch.badges_count = 0;
+  if(typeof data.disabled !== "boolean") patch.disabled = false;
 
   if(Object.keys(patch).length){
     patch.updatedAt = serverTimestamp();

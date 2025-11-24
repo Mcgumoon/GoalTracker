@@ -68,10 +68,10 @@ public/
 🖼️ Screenshots
 
 **Login**
-![GoalTracker – Login](assets/login.png)
+![GoalTracker – Login](./src/assets/login.png)
 
 **Dashboard**
-![GoalTracker – Dashboard](assets/dashboard.png)
+![GoalTracker – Dashboard](./src/assets/dashboard.png)
 
 
 🗺️ Roadmap

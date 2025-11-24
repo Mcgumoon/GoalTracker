@@ -13,7 +13,9 @@ import {
   sendPasswordResetEmail,
   updatePassword
 } from "firebase/auth";
-import { auth } from "../firebase"; 
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../firebase";
+import { auth } from "../firebase";
 import { ensureUserDoc } from "../utils/ensureUserDocs";
 
 const AuthContext = createContext(null);
@@ -26,13 +28,13 @@ export function AuthProvider({ children }) {
     setPersistence(auth, browserSessionPersistence);
   }, []);
 
-  
+
   useEffect(() => {
     const unsub = onIdTokenChanged(auth, async (currentUser) => {
       setUser(currentUser || null);
       setLoading(false);
 
-      
+
       if (currentUser) {
         const token = await currentUser.getIdToken(/* forceRefresh */ false);
         localStorage.setItem("accessToken", token);
@@ -49,10 +51,10 @@ export function AuthProvider({ children }) {
     let timer;
 
     const reset = () => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            signOut(auth);
-        }, LOGOUT_IF_NO_ACTIVITY);
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        signOut(auth);
+      }, LOGOUT_IF_NO_ACTIVITY);
     };
 
     const events = ["mousemove", "keydown", "click", "scroll", "touchstart"];
@@ -63,14 +65,32 @@ export function AuthProvider({ children }) {
     reset();
 
     return () => {
-        clearTimeout(timer);
-        events.forEach((event) => window.removeEventListener(event, reset));
-        document.removeEventListener("visibilitychange", onVisible);
+      clearTimeout(timer);
+      events.forEach((event) => window.removeEventListener(event, reset));
+      document.removeEventListener("visibilitychange", onVisible);
     };
 
   }, [user]);
 
-  
+  useEffect(() => {
+    if (!user) return;
+
+    const ref = doc(db, "users", user.uid);
+
+    const unsub = onSnapshot(ref, snap => {
+      const data = snap.data();
+      if (data?.disabled === true) {
+        signOut(auth);
+        setUser(null);
+      }
+    });
+
+    return () => unsub();
+  }, [user]);
+
+
+
+
   const register = async ({ email, password, displayName }) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     if (displayName) await updateProfile(cred.user, { displayName });
