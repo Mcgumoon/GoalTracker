@@ -1,4 +1,4 @@
-GoalTracker ✨
+# **GoalTracker ✨**
 
 A clean React + Vite app to create, organize, and complete your goals. Finishing goals earns points and unlocks badges. Organize by category for easy focus.
 
@@ -29,8 +29,19 @@ npm run dev
 npm run build
 npm run preview
 
+🔐 Environment (.env)
 
-💡 Uses Firebase (Auth/Firestore). Add your usual env settings as you prefer.
+Create a .env (or .env.local) at the project root with your Firebase web credentials. 
+
+# Firebase Web App ( use *your* values)
+VITE_FIREBASE_API_KEY = your credentials
+VITE_FIREBASE_AUTH_DOMAIN = your credentials
+VITE_FIREBASE_PROJECT_ID = your credentials
+VITE_FIREBASE_STORAGE_BUCKET = your credentials
+VITE_FIREBASE_MESSAGING_SENDER_ID = your credentials
+VITE_FIREBASE_APP_ID = your credentials
+VITE_FIREBASE_MEASUREMENT_ID = your credentials
+
 
 🗂️ Project Structure (high level)
 src/
@@ -56,9 +67,12 @@ public/
 
 🖼️ Screenshots
 
-Login:
+**Login**
+![GoalTracker – Login](assets/login.png)
 
-Goals:
+**Dashboard**
+![GoalTracker – Dashboard](assets/dashboard.png)
+
 
 🗺️ Roadmap
 

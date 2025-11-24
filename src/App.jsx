@@ -10,6 +10,12 @@ import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import ChangePassword from "./pages/ChangePassword";
 
+import Groups from "./pages/Groups";
+import GroupDetail from "./components/groups/GroupDetail";
+import GroupLeaderboard from "./components/groups/GroupLeaderboard";
+import GroupSettings from "./components/groups/GroupSettings";
+
+
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 export default function App() {
@@ -32,6 +38,54 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      {/* Groups list */}
+      <Route
+        path="/groups"
+        element={
+          <ProtectedRoute>
+            <Shell>
+              <Groups />
+            </Shell>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Group detail */}
+      <Route
+        path="/groups/:groupId"
+        element={
+          <ProtectedRoute>
+            <Shell>
+              <GroupDetail />
+            </Shell>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Group leaderboard */}
+      <Route
+        path="/groups/:groupId/leaderboard"
+        element={
+          <ProtectedRoute>
+            <Shell>
+              <GroupLeaderboard />
+            </Shell>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Admin settings */}
+      <Route
+        path="/groups/:groupId/settings"
+        element={
+          <ProtectedRoute>
+            <Shell>
+              <GroupSettings />
+            </Shell>
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/settings"
         element={

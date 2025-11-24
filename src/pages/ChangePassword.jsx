@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import ChangePasswordForm from "../components/ChangePasswordForm";
+import ChangePasswordForm from "../components/user/ChangePasswordForm";
 
 export default function ChangePassword() {
   const navigate = useNavigate();

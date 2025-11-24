@@ -4,7 +4,7 @@ import {
   EmailAuthProvider,
   updatePassword,
 } from "firebase/auth";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ChangePasswordForm({ onSuccess, onCancel }) {
   const { user } = useAuth();

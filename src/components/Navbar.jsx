@@ -10,10 +10,10 @@ export default function Navbar() {
     const toggle = () => setOpen(v => !v);
     const close = () => setOpen(false);
 
-    // Close when navigating
+
     useEffect(() => { close(); }, [location.pathname]);
 
-    // Close on ESC
+
     useEffect(() => {
         if (!open) return;
         const onKey = (e) => e.key === "Escape" && close();
@@ -30,7 +30,6 @@ export default function Navbar() {
             {/* Top bar */}
             <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-divider h-16">
                 <div className="h-full px-4 flex items-center gap-3">
-                    {/* Hamburger (only when authenticated) */}
                     {user ? (
                         <button
                             type="button"
@@ -41,7 +40,6 @@ export default function Navbar() {
                             className="h-10 w-10 inline-flex items-center justify-center rounded-xl bg-white/70 hover:bg-white
                          shadow-pastelSm active:translate-y-[1px] transition"
                         >
-                            {/* Animated hamburger -> X using 3 lines */}
                             <span className="relative block h-5 w-6">
                                 <span
                                     className={`absolute left-0 top-0 h-0.5 w-6 rounded bg-[#6f3f83] transition-transform duration-300
@@ -83,7 +81,7 @@ export default function Navbar() {
                         className="no-underline flex items-center gap-2 group transition-transform duration-300"
                     >
                         {/* Mini Logo */}
-                        <span className=" inline-flex items-center justify-center select-none rounded-lg text-white font-extrabold tracking-wide bg-gradient-to-br from-rose2 via-rose3 to-violet shadow-pastelSm-[0_4px_12px_rgba(183,143,203,0.35)] ring-1 ring-rose3/50 group-hover:scale-110 group-hover:shadow-pastelSm transition-all duration-300 ease-out" style={{ width: 32, height: 32, fontSize: 14, lineHeight: 1,}} aria-hidden="true" title="GT">
+                        <span className=" inline-flex items-center justify-center select-none rounded-lg text-white font-extrabold tracking-wide bg-gradient-to-br from-rose2 via-rose3 to-violet shadow-pastelSm-[0_4px_12px_rgba(183,143,203,0.35)] ring-1 ring-rose3/50 group-hover:scale-110 group-hover:shadow-pastelSm transition-all duration-300 ease-out" style={{ width: 32, height: 32, fontSize: 14, lineHeight: 1, }} aria-hidden="true" title="GT">
                             GT
                         </span>
 
@@ -95,7 +93,6 @@ export default function Navbar() {
                 </div>
             </header>
 
-            {/* Drawer + backdrop (only when authenticated) */}
             {user && (
                 <>
                     {/* Backdrop */}
@@ -105,7 +102,6 @@ export default function Navbar() {
                         ${open ? "opacity-100" : "opacity-0 pointer-events-none"}`}
                     />
 
-                    {/* Drawer */}
                     <aside
                         id="app-drawer"
                         className={`fixed z-40 top-0 left-0 h-full w-64 bg-violet 
@@ -116,6 +112,8 @@ export default function Navbar() {
                         <div className="h-16" />
                         <nav className="p-4 flex flex-col gap-2">
                             <NavLink to="/" className={itemClass} onClick={close}>Home</NavLink>
+                            <NavLink to="/groups" className={itemClass}>Groups</NavLink>
+
                             <NavLink to="/settings" className={itemClass} onClick={close}>Settings</NavLink>
                             <div className="divider" />
                             <button

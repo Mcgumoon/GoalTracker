@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import AuthForm from "../components/AuthForm";
+import AuthForm from "../components/user/AuthForm";
 import LogoHero from "../components/LogoHero";
 
 export default function Register() {

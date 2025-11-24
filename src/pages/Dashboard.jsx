@@ -4,10 +4,11 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import useGoals from "../hooks/useGoals";
 import GoalList from "../components/goals/GoalList";
-import Modal from "../components/Modal";
+import Modal from "../components/user/Modal";
 import GoalForm from "../components/goals/GoalForm";
 import EmptyState from "../components/EmptyState";
-import BadgeStat from "../components/BadgeStat";
+import BadgeStat from "../components/user/BadgeStat";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -16,6 +17,8 @@ export default function Dashboard() {
   const [points, setPoints] = useState(0);
   const [badges, setBadges] = useState(0);
   const [openNew, setOpenNew] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -48,7 +51,7 @@ export default function Dashboard() {
 
       {/* Stats row (styled) */}
       <div className="auth-card flex flex-col md:flex-row items-center gap-4 mb-6 p-4 md:p-5 rounded-xl">
-        {/* Left: Points */}
+        {/* Left: Points, Badges, and Groups button */}
         <div className="flex items-center gap-4 flex-1 min-w-0">
           <div className="flex items-center gap-3 bg-white border border-purple-100 shadow-sm px-4 py-3 rounded-xl">
             <span className="text-lg font-bold text-purple-600">{points}</span>
@@ -57,6 +60,14 @@ export default function Dashboard() {
 
           {/* Badges: fire icon + count */}
           <BadgeStat stats={{ badges_count: badges }} />
+
+          {/* My Groups button */}
+          <button
+            className="flex items-center gap-3 bg-white border border-purple-100 shadow-sm px-4 py-3 rounded-xl hover:bg-purple-50 transition-colors"
+            onClick={() => navigate("/groups")}
+          >
+            <span className="text-sm text-gray-500">My Groups</span>
+          </button>
         </div>
 
         {/* Right: New Goal button */}
