@@ -1,5 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, runTransaction, serverTimestamp, updateDoc, Timestamp } from "firebase/firestore";
+import { 
+  addDoc, 
+  collection, 
+  deleteDoc, 
+  doc, 
+  onSnapshot, 
+  orderBy, 
+  query, 
+  runTransaction, 
+  serverTimestamp, 
+  updateDoc, 
+  Timestamp 
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 
@@ -18,13 +30,18 @@ export default function useGoals() {
 
     useEffect(() => {
         if (!base) return;
+        
         const q = query(base.goalsCol, orderBy("createdAt", "desc"));
         const unsub = onSnapshot(q, (snap) => {
             const out = [];
             snap.forEach((d) => out.push({ id: d.id, ...d.data() }));
             setGoals(out);
             setLoading(false);
+        }, (error) => {
+            console.error("Error fetching goals:", error);
+            setLoading(false);
         });
+        
         return () => unsub();
     }, [base]);
 
@@ -33,11 +50,21 @@ export default function useGoals() {
 
         const cleanTitle = String(title || "").trim();
         const cleanNotes = String(notes || "").trim();
-        const cleanDue =
-            dueDate && String(dueDate).trim()
-                ? Timestamp.fromDate(new Date(String(dueDate).trim() + "T00:00:00"))
-                : null;
+        let cleanDue = null;
+        
+        if (dueDate && String(dueDate).trim()) {
+            try {
+                cleanDue = Timestamp.fromDate(new Date(String(dueDate).trim() + "T00:00:00"));
+            } catch (error) {
+                console.error("Invalid due date:", error);
+            }
+        }
+        
         const cleanCat = String(category || "Uncategorized").trim() || "Uncategorized";
+
+        if (!cleanTitle) {
+            throw new Error("Goal title is required");
+        }
 
         await addDoc(base.goalsCol, {
             title: cleanTitle,
@@ -59,7 +86,8 @@ export default function useGoals() {
         if (category !== undefined) patch.category = String(category || "Uncategorized").trim() || "Uncategorized";
 
         if (dueDate !== undefined) {
-            patch.dueDate = dueDate && dueDate.trim() ? Timestamp.fromDate(new Date(dueDate.trim() + "T00:00:00"))
+            patch.dueDate = dueDate && dueDate.trim() 
+                ? Timestamp.fromDate(new Date(dueDate.trim() + "T00:00:00"))
                 : null;
         }
 
@@ -73,14 +101,12 @@ export default function useGoals() {
         const userRef = base.userDoc;
 
         await runTransaction(db, async (tx) => {
-            
             const [gSnap, uSnap] = await Promise.all([tx.get(goalRef), tx.get(userRef)]);
             if (!gSnap.exists()) return;
 
             const wasCompleted = !!gSnap.data().completed;
             const prevPoints = Number(uSnap.data()?.points || 0);
 
-            
             tx.delete(goalRef);
 
             if (wasCompleted) {
@@ -100,15 +126,11 @@ export default function useGoals() {
         });
     }, [base]);
 
-
     const toggleComplete = useCallback(async (goal) => {
         if (!base) throw new Error("Not authenticated");
 
         const goalRef = doc(base.goalsCol, goal.id);
         const userRef = base.userDoc;
-
-        let earnedBadge = false;
-        let earnedBadgeIndex = 0;
 
         await runTransaction(db, async (tx) => {
             const [gSnap, uSnap] = await Promise.all([tx.get(goalRef), tx.get(userRef)]);
@@ -123,8 +145,6 @@ export default function useGoals() {
             });
 
             const prevPoints = Number(uSnap.data()?.points || 0);
-
-
             const delta = willComplete ? 1 : -1;
             const nextPoints = Math.max(0, prevPoints + delta);
             const nextBadges = Math.floor(nextPoints / 5);
@@ -134,10 +154,7 @@ export default function useGoals() {
                 badges_count: nextBadges,
                 updatedAt: serverTimestamp(),
             }, { merge: true });
-
-
         });
-        return { earnedBadge, badgeIndex: earnedBadgeIndex };
     }, [base]);
 
     return { goals, loading, createGoal, editGoal, removeGoal, toggleComplete };

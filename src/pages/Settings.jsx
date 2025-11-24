@@ -28,13 +28,16 @@ export default function Settings() {
             {/* Header / Avatar */}
             <div className="flex items-center justify-center gap-4 mb-4">
                 <div
-                    className=" inline-flex items-center justify-center select-none rounded-2xl text-white font-extrabold tracking-wide bg-rose2 bg-gradient-to-br from-rose2 via-rose3 to-violet shadow-pastel ring-2 ring-rose3/60 ring-offset-2 ring-offset-white dark:ring-offset-gray-900 " style={{ width: 64, height: 64, fontSize: 24, lineHeight: 1 }} aria-label={`Avatar: ${initials}`}>
+                    className="inline-flex items-center justify-center select-none rounded-2xl text-white font-extrabold tracking-wide bg-gradient-to-br from-rose2 via-rose3 to-violet shadow-pastel ring-2 ring-rose3/60 ring-offset-2 ring-offset-white"
+                    style={{ width: 64, height: 64, fontSize: 24, lineHeight: 1 }}
+                    aria-label={`Avatar: ${initials}`}
+                >
                     <span className="drop-shadow-[0_2px_3px_rgba(0,0,0,0.35)]">{initials}</span>
                 </div>
 
                 <div className="text-left">
-                    <h2 className="h1 m-0">{name}</h2>
-                    <div className="subtle">{email}</div>
+                    <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 m-0">{name}</h2>
+                    <div className="text-sm text-gray-600">{email}</div>
                     <div className="mt-1">
                         <span
                             className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
@@ -46,29 +49,33 @@ export default function Settings() {
                 </div>
             </div>
 
-            <div className="divider" />
+            {/* Custom divider with your color scheme */}
+            <div className="my-6 h-px bg-gradient-to-r from-transparent via-rose2/50 to-transparent"></div>
 
             {/* Details Card */}
-            <div className="card">
-                <div className="card-row">
-                    <span className="card-label">Name</span>
-                    <span>{name}</span>
+            <div className="bg-white border-2 border-rose1/40 rounded-2xl p-5 shadow-pastel">
+                <div className="flex items-center justify-between py-3 border-b border-dashed border-rose2/60 last:border-b-0">
+                    <span className="text-gray-600 mr-4">Name</span>
+                    <span className="text-gray-800 font-medium">{name}</span>
                 </div>
-                <div className="card-row">
-                    <span className="card-label">Email</span>
-                    <span>{email}</span>
+                <div className="flex items-center justify-between py-3 border-b border-dashed border-rose2/60 last:border-b-0">
+                    <span className="text-gray-600 mr-4">Email</span>
+                    <span className="text-gray-800 font-medium">{email}</span>
                 </div>
-                <div className="card-row">
-                    <span className="card-label">Member Since</span>
-                    <span>{created}</span>
+                <div className="flex items-center justify-between py-3 border-b border-dashed border-rose2/60 last:border-b-0">
+                    <span className="text-gray-600 mr-4">Member Since</span>
+                    <span className="text-gray-800 font-medium">{created}</span>
                 </div>
-                <div className="card-row">
-                    <span className="card-label">Email Verified</span>
-                    <span>{verified ? "Yes" : "No"}</span>
+                <div className="flex items-center justify-between py-3 last:border-b-0">
+                    <span className="text-gray-600 mr-4">Email Verified</span>
+                    <span className="text-gray-800 font-medium">{verified ? "Yes" : "No"}</span>
                 </div>
 
-                <div className="flex justify-center mt-4 gap-3">
-                    <Link to="/change-password" className="btn btn-primary">
+                <div className="flex justify-center mt-6 gap-3">
+                    <Link 
+                        to="/change-password" 
+                        className="inline-flex items-center justify-center gap-2 font-semibold rounded-xl px-4 py-2 transition-transform duration-150 ease-in-out active:translate-y-[1px] select-none bg-violet text-white hover:bg-violet2 shadow-pastel"
+                    >
                         Change Password
                     </Link>
                 </div>
