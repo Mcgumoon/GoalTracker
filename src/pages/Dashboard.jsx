@@ -8,7 +8,6 @@ import Modal from "../components/user/Modal";
 import GoalForm from "../components/goals/GoalForm";
 import EmptyState from "../components/EmptyState";
 import BadgeStat from "../components/user/BadgeStat";
-import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -18,7 +17,6 @@ export default function Dashboard() {
   const [badges, setBadges] = useState(0);
   const [openNew, setOpenNew] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -51,7 +49,7 @@ export default function Dashboard() {
 
       {/* Stats row (styled) */}
       <div className="auth-card flex flex-col md:flex-row items-center gap-4 mb-6 p-4 md:p-5 rounded-xl">
-        {/* Left: Points, Badges, and Groups button */}
+        {/* Left: Points */}
         <div className="flex items-center gap-4 flex-1 min-w-0">
           <div className="flex items-center gap-3 bg-white border border-purple-100 shadow-sm px-4 py-3 rounded-xl">
             <span className="text-lg font-bold text-purple-600">{points}</span>
@@ -60,14 +58,6 @@ export default function Dashboard() {
 
           {/* Badges: fire icon + count */}
           <BadgeStat stats={{ badges_count: badges }} />
-
-          {/* My Groups button */}
-          <button
-            className="flex items-center gap-3 bg-white border border-purple-100 shadow-sm px-4 py-3 rounded-xl hover:bg-purple-50 transition-colors"
-            onClick={() => navigate("/groups")}
-          >
-            <span className="text-sm text-gray-500">My Groups</span>
-          </button>
         </div>
 
         {/* Right: New Goal button */}
@@ -98,6 +88,9 @@ export default function Dashboard() {
           <div className="space-y-4">
             <GoalList
               goals={goals}
+              mode="dashboard"
+              showCompleted={showCompleted}
+              setShowCompleted={setShowCompleted}
               onCreate={createGoal}
               onEdit={editGoal}
               onRemove={removeGoal}
