@@ -10,9 +10,7 @@ export default function Navbar() {
     const toggle = () => setOpen(v => !v);
     const close = () => setOpen(false);
 
-
     useEffect(() => { close(); }, [location.pathname]);
-
 
     useEffect(() => {
         if (!open) return;
@@ -37,8 +35,7 @@ export default function Navbar() {
                             aria-controls="app-drawer"
                             aria-expanded={open}
                             onClick={toggle}
-                            className="h-10 w-10 inline-flex items-center justify-center rounded-xl bg-white/70 hover:bg-white
-                         shadow-pastelSm active:translate-y-[1px] transition"
+                            className="h-10 w-10 inline-flex items-center justify-center rounded-xl bg-white/70 hover:bg-white shadow-pastelSm active:translate-y-[1px] transition"
                         >
                             <span className="relative block h-5 w-6">
                                 <span
@@ -59,34 +56,20 @@ export default function Navbar() {
                         <div className="w-10" />
                     )}
 
-                    {/* Brand with tiny gradient LogoMini */}
-                    {/* <Link
-            to={user ? "/" : "/login"}
-            className="no-underline flex items-center gap-2"
-          >
-                        <span
-              className="inline-flex items-center justify-center rounded-lg
-                         bg-gradient-to-br from-rose2 to-violet text-white font-extrabold"
-              style={{ width: 28, height: 28, fontSize: 12 }}
-              aria-hidden="true"
-              title="GT"
-            >
-              GT
-            </span>
-
-            <span className="font-extrabold text-violet text-xl">Goal Tracker</span>
-          </Link> */}
                     <Link
                         to={user ? "/" : "/login"}
                         className="no-underline flex items-center gap-2 group transition-transform duration-300"
                     >
-                        {/* Mini Logo */}
-                        <span className=" inline-flex items-center justify-center select-none rounded-lg text-white font-extrabold tracking-wide bg-gradient-to-br from-rose2 via-rose3 to-violet shadow-pastelSm-[0_4px_12px_rgba(183,143,203,0.35)] ring-1 ring-rose3/50 group-hover:scale-110 group-hover:shadow-pastelSm transition-all duration-300 ease-out" style={{ width: 32, height: 32, fontSize: 14, lineHeight: 1, }} aria-hidden="true" title="GT">
+                        <span
+                            className="inline-flex items-center justify-center select-none rounded-lg text-white font-extrabold tracking-wide bg-gradient-to-br from-rose2 via-rose3 to-violet shadow-pastelSm-[0_4px_12px_rgba(183,143,203,0.35)] ring-1 ring-rose3/50 group-hover:scale-110 group-hover:shadow-pastelSm transition-all duration-300 ease-out"
+                            style={{ width: 32, height: 32, fontSize: 14, lineHeight: 1 }}
+                            aria-hidden="true"
+                            title="GT"
+                        >
                             GT
                         </span>
 
-                        {/* Text */}
-                        <span className=" font-extrabold text-violet text-xl tracking-tight group-hover:text-violet2 transition-colors duration-300">
+                        <span className="font-extrabold text-violet text-xl tracking-tight group-hover:text-violet2 transition-colors duration-300">
                             Goal Tracker
                         </span>
                     </Link>
@@ -98,22 +81,22 @@ export default function Navbar() {
                     {/* Backdrop */}
                     <div
                         onClick={close}
-                        className={`fixed inset-0 bg-black/30 z-30 transition-opacity
-                        ${open ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                        className={`fixed inset-0 bg-black/30 z-30 transition-opacity ${
+                            open ? "opacity-100" : "opacity-0 pointer-events-none"
+                        }`}
                     />
 
                     <aside
                         id="app-drawer"
-                        className={`fixed z-40 top-0 left-0 h-full w-64 bg-violet 
-                        transition-transform duration-300
-                        ${open ? "translate-x-0" : "-translate-x-full"}`}
+                        className={`fixed z-40 top-0 left-0 h-full w-64 bg-violet transition-transform duration-300 ${
+                            open ? "translate-x-0" : "-translate-x-full"
+                        }`}
                         aria-label="App navigation"
                     >
                         <div className="h-16" />
                         <nav className="p-4 flex flex-col gap-2">
                             <NavLink to="/" className={itemClass} onClick={close}>Home</NavLink>
                             <NavLink to="/groups" className={itemClass}>Groups</NavLink>
-
                             <NavLink to="/settings" className={itemClass} onClick={close}>Settings</NavLink>
                             <div className="divider" />
                             <button
