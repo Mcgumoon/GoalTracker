@@ -15,13 +15,6 @@ import GroupDetail from "./components/groups/GroupDetail";
 import GroupLeaderboard from "./components/groups/GroupLeaderboard";
 import GroupSettings from "./components/groups/GroupSettings";
 
-
-import Groups from "./pages/Groups";
-import GroupDetail from "./components/groups/GroupDetail";
-import GroupLeaderboard from "./components/groups/GroupLeaderboard";
-import GroupSettings from "./components/groups/GroupSettings";
-
-
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 export default function App() {
