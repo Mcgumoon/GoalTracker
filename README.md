@@ -74,8 +74,5 @@ public/
 ![GoalTracker – Dashboard](./src/assets/dashboard.png)
 
 
-🗺️ Roadmap
-
-🏆 Leaderboard
-
-🔁 Streak badges
+**🏆 Leaderboard**
+![GoalTracker – Leader Board](./src/assets/leaderboard.png)
