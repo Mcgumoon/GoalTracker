@@ -10,10 +10,8 @@ export default function Navbar() {
     const toggle = () => setOpen(v => !v);
     const close = () => setOpen(false);
 
-    
     useEffect(() => { close(); }, [location.pathname]);
 
-    
     useEffect(() => {
         if (!open) return;
         const onKey = (e) => e.key === "Escape" && close();
@@ -30,7 +28,6 @@ export default function Navbar() {
             {/* Top bar */}
             <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-divider h-16">
                 <div className="h-full px-4 flex items-center gap-3">
-                   
                     {user ? (
                         <button
                             type="button"
@@ -40,7 +37,6 @@ export default function Navbar() {
                             onClick={toggle}
                             className="h-10 w-10 inline-flex items-center justify-center rounded-xl bg-white/70 hover:bg-white shadow-pastelSm active:translate-y-[1px] transition"
                         >
-                           
                             <span className="relative block h-5 w-6">
                                 <span
                                     className={`absolute left-0 top-0 h-0.5 w-6 rounded bg-[#6f3f83] transition-transform duration-300
@@ -80,7 +76,7 @@ export default function Navbar() {
                 </div>
             </header>
 
-            
+            {/* Drawer */}
             {user && (
                 <>
                     {/* Backdrop */}
@@ -91,28 +87,39 @@ export default function Navbar() {
                         }`}
                     />
 
-                   
+                    {/* Sidebar */}
                     <aside
                         id="app-drawer"
-                        className={`fixed z-40 top-0 left-0 h-full w-64 bg-violet transition-transform duration-300 ${
+                        className={`fixed z-40 top-0 left-0 h-full w-64 bg-violet transition-transform duration-300 flex flex-col ${
                             open ? "translate-x-0" : "-translate-x-full"
                         }`}
                         aria-label="App navigation"
                     >
                         <div className="h-16" />
-                        <nav className="p-4 flex flex-col gap-2">
+
+                        {/* Navigation section */}
+                        <nav className="p-4 flex flex-col gap-2 flex-1 overflow-y-auto">
                             <NavLink to="/" className={itemClass} onClick={close}>Home</NavLink>
-                            <NavLink to="/groups" className={itemClass}>Groups</NavLink>
+                            <NavLink to="/groups" className={itemClass} onClick={close}>Groups</NavLink>
                             <NavLink to="/settings" className={itemClass} onClick={close}>Settings</NavLink>
-                            <NavLink to="/completed-goal-history" className={itemClass} onClick={close}>Completed Goal History</NavLink>
-                            <div className="divider" />
+                            <NavLink to="/completed-goal-history" className={itemClass} onClick={close}>History</NavLink>
+                        </nav>
+
+                        {/* Logout at bottom */}
+                        <div className="p-4 border-t border-white/20">
                             <button
                                 onClick={() => { logout(); close(); }}
-                                className="text-left mt-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white"
+                                className="
+                                    w-full text-left px-4 py-2 rounded-xl font-semibold 
+                                    bg-gradient-to-br from-rose-950/20 via-rose-800/20 to-rose-950/20 
+                                    text-white shadow-lg shadow-rose-600/20 
+                                    hover:brightness-120 active:scale-[0.98] 
+                                    transition-all duration-200
+                                "
                             >
                                 Logout
                             </button>
-                        </nav>
+                        </div>
                     </aside>
                 </>
             )}
