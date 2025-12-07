@@ -138,10 +138,10 @@ export default function GoalList({
     return getUpdatedTime(b) - getUpdatedTime(a);
   });
   //// DO NOT REMOVE YET - FOR DEBUGGING PURPOSES ONLY
-  console.log('✅ Completed goals:', completed.map(g => ({
-    title: g.title,
-    hoursAgo: ((Date.now() - getUpdatedTime(g)) / (1000 * 60 * 60)).toFixed(1) + 'hr'
-  })));
+  // console.log('✅ Completed goals:', completed.map(g => ({
+  //   title: g.title,
+  //   hoursAgo: ((Date.now() - getUpdatedTime(g)) / (1000 * 60 * 60)).toFixed(1) + 'hr'
+  // })));
 
   return (
     <div className="w-full">
