@@ -248,6 +248,107 @@ function Section({ title, goals, onEdit, onRemove, onToggle, completed }) {
   );
 }
 
+// function GoalItem({ goal, onEdit, onRemove, onToggle, completed }) {
+//   const [editing, setEditing] = useState(false);
+//   const [pendingToggle, setPendingToggle] = useState(false);
+//   const prettyDate = toPrettyDate(goal.dueDate);
+//   const category = goal.category || "Uncategorized";
+
+//   return (
+//     <li>
+//       <div
+//         className={`flex items-start gap-4 rounded-lg border p-4 transition ${goal.completed ? "border-gray-200 bg-gray-50" : "border-pink-100 bg-white"
+//           }`}
+//       >
+
+//         {!completed && (
+//           <div className="pt-1">
+//             <input
+//               type="checkbox"
+//               aria-label="Complete goal"
+//               checked={!!goal.completed}
+//               disabled={pendingToggle}
+//               onChange={async () => {
+//                 try {
+//                   setPendingToggle(true);
+//                   await onToggle(goal);
+//                 } finally {
+//                   setPendingToggle(false);
+//                 }
+//               }}
+//               className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-300"
+//             />
+//           </div>
+//         )}
+
+//         {/* content */}
+//         <div className={`flex-1 ${completed ? 'ml-0' : ''}`}>
+//           <div className="flex items-center justify-between">
+//             <span
+//               className={`text-sm font-medium ${goal.completed ? "line-through text-gray-500" : "text-gray-800"
+//                 }`}
+//             >
+//               {goal.title}
+//             </span>
+
+//             {prettyDate && (
+//               <span className="text-xs text-gray-500">
+//                 Due: <span className="font-medium text-gray-700">{prettyDate}</span>
+//               </span>
+//             )}
+//           </div>
+
+//           {goal.notes && <div className="mt-1 text-sm text-gray-500">{goal.notes}</div>}
+
+//           {completed && (
+//             <div className="mt-1 text-xs text-gray-400">
+//               Completed: {toPrettyDate(goal.updatedAt)}
+//             </div>
+//           )}
+//         </div>
+
+//         {/* actions */}
+//         {!completed && (
+//           <div className="flex flex-col gap-2">
+//             <button
+//               type="button"
+//               onClick={() => setEditing(true)}
+//               className="text-sm px-3 py-1.5 border border-purple-200 text-purple-700 rounded-md hover:bg-purple-50"
+//             >
+//               Edit
+//             </button>
+//             <button
+//               type="button"
+//               onClick={() => onRemove(goal.id)}
+//               className="text-sm px-3 py-1.5 border border-pink-200 text-pink-600 rounded-md hover:bg-pink-50"
+//             >
+//               Delete
+//             </button>
+//           </div>
+//         )}
+//       </div>
+
+//       {editing && (
+//         <div className="mt-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
+//           <GoalForm
+//             initial={{
+//               title: goal.title ?? "",
+//               notes: goal.notes ?? "",
+//               dueDate: toInputDate(goal.dueDate),
+//               category: category,
+//             }}
+//             onSubmit={async (data) => {
+//               await onEdit(goal.id, data);
+//               setEditing(false);
+//             }}
+//             onCancel={() => setEditing(false)}
+//           />
+//         </div>
+//       )}
+//     </li>
+//   );
+// }
+
 function GoalItem({ goal, onEdit, onRemove, onToggle, completed }) {
   const [editing, setEditing] = useState(false);
   const [pendingToggle, setPendingToggle] = useState(false);
@@ -257,48 +358,48 @@ function GoalItem({ goal, onEdit, onRemove, onToggle, completed }) {
   return (
     <li>
       <div
-        className={`flex items-start gap-4 rounded-lg border p-4 transition ${goal.completed ? "border-gray-200 bg-gray-50" : "border-pink-100 bg-white"
-          }`}
+        className={`flex flex-col sm:flex-row sm:items-center
+                    gap-3 sm:gap-4 rounded-lg border p-4 transition
+                    ${goal.completed ? "border-gray-200 bg-gray-50" : "border-pink-100 bg-white"}`}
       >
-
         {!completed && (
-          <div className="pt-1">
+          <div className="pt-1 shrink-0">
             <input
               type="checkbox"
               aria-label="Complete goal"
               checked={!!goal.completed}
               disabled={pendingToggle}
               onChange={async () => {
-                try {
-                  setPendingToggle(true);
-                  await onToggle(goal);
-                } finally {
-                  setPendingToggle(false);
-                }
+                try { setPendingToggle(true); await onToggle(goal); }
+                finally { setPendingToggle(false); }
               }}
               className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-300"
             />
           </div>
         )}
 
-        {/* content */}
-        <div className={`flex-1 ${completed ? 'ml-0' : ''}`}>
-          <div className="flex items-center justify-between">
+        {/* middle: title + meta */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start sm:items-center justify-between gap-2">
             <span
-              className={`text-sm font-medium ${goal.completed ? "line-through text-gray-500" : "text-gray-800"
-                }`}
+              className={`text-sm font-medium truncate
+                         ${goal.completed ? "line-through text-gray-500" : "text-gray-800"}`}
+              title={goal.title}
             >
               {goal.title}
             </span>
 
             {prettyDate && (
-              <span className="text-xs text-gray-500">
-                Due: <span className="font-medium text-gray-700">{prettyDate}</span>
+              <span className="text-xs text-gray-500 shrink-0 whitespace-nowrap">
+                <span className="text-gray-400">Due:</span>{" "}
+                <span className="font-medium text-gray-700">{prettyDate}</span>
               </span>
             )}
           </div>
 
-          {goal.notes && <div className="mt-1 text-sm text-gray-500">{goal.notes}</div>}
+          {goal.notes && (
+            <div className="mt-1 text-sm text-gray-500 line-clamp-2">{goal.notes}</div>
+          )}
 
           {completed && (
             <div className="mt-1 text-xs text-gray-400">
@@ -307,9 +408,9 @@ function GoalItem({ goal, onEdit, onRemove, onToggle, completed }) {
           )}
         </div>
 
-        {/* actions */}
+        {/* right: actions */}
         {!completed && (
-          <div className="flex flex-col gap-2">
+          <div className="sm:ml-auto mt-2 sm:mt-0 flex items-center gap-2 shrink-0">
             <button
               type="button"
               onClick={() => setEditing(true)}
